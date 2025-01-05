@@ -1,54 +1,35 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>图片上传</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片上传</title>
 </head>
 <body>
-   <h1>上传图片</h1>
-   <input type="file" id="fileInput" accept="image/*">
-   <button id="uploadBtn">上传</button>
-   <h2>上传的图片</h2>
-   <div id="imagePreview"></div>
+    <h1>上传图片</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button id="uploadBtn">上传</button>
+    <h2>上传的图片</h2>
+    <div id="imagePreview"></div>
 
-   <script>
-       document.getElementById('uploadBtn').addEventListener('click', function() {
-           const fileInput = document.getElementById('fileInput');
-           const files = fileInput.files;
+    <script>
+        document.getElementById('uploadBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
 
-           if (files.length > 0) {
-               const reader = new FileReader();
-               reader.onload = function(e) {
-                   const img = document.createElement('img');
-                   img.src = e.target.result;
-                   img.style.maxWidth = '300px';
-                   document.getElementById('imagePreview').appendChild(img);
-
-                   // 调用 API 解释该图片
-                   fetch('https://api.gemini.com/v1/interpret', {
-                       method: 'POST',
-                       headers: {
-                           'Content-Type': 'application/json',
-                           'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`
-                       },
-                       body: JSON.stringify({ image: e.target.result })
-                   })
-                   .then(response => response.json())
-                   .then(data => {
-                       console.log('API 解释结果:', data);
-                       // 可以在这里显示 API 的解释结果，例如在页面上显示一个文本框展示解释结果
-                       const resultDiv = document.createElement('div');
-                       resultDiv.textContent = JSON.stringify(data, null, 2);
-                       document.body.appendChild(resultDiv);
-                   })
-                   .catch(error => console.error('Error:', error));
-               };
-               reader.readAsDataURL(files[0]);
-           } else {
-               alert('请先选择一张图片。');
-           }
-       });
-   </script>
+            if (files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '300px';
+                    document.getElementById('imagePreview').appendChild(img);
+                };
+                reader.readAsDataURL(files[0]);
+            } else {
+                alert('请先选择一张图片。');
+            }
+        });
+    </script>
 </body>
 </html>
