@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片上传</title>
+</head>
+<body>
+    <h1>上传图片</h1>
+    <input type="file" id="fileInput" accept="image/*">
+    <button id="uploadBtn">上传</button>
+    <h2>上传的图片</h2>
+    <div id="imagePreview"></div>
+
+    <script>
+        document.getElementById('uploadBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+
+            if (files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '300px';
+                    document.getElementById('imagePreview').appendChild(img);
+                };
+                reader.readAsDataURL(files[0]);
+            } else {
+                alert('请先选择一张图片。');
+            }
+        });
+    </script>
+</body>
+</html>
